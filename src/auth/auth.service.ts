@@ -25,9 +25,11 @@ export class AuthService {
     }
 
     const newUser = await this.prisma.user.create({
-      email,
-      password,
-      name,
+      data: {
+        email,
+        name,
+        password,
+      },
     });
 
     return {
@@ -38,7 +40,7 @@ export class AuthService {
   async login(login: LoginDto) {
     const { email, password } = login;
 
-    const foundedUser = await this.prisma.user.findOne({
+    const foundedUser = await this.prisma.user.findFirst({
       where: {
         email,
         password,
